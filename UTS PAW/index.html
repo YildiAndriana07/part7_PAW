@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIMA - Saintek</title>
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        :root {
+            --primary: #FFD700;
+            --primary-dark: #FFC107;
+            --primary-light: #FFF9C4;
+            --secondary: #FF6B35;
+            --accent: #FF4081;
+            --dark: #1A202C;
+            --darker: #0F1419;
+            --light: #F7FAFC;
+            --gray: #A0AEC0;
+            --success: #48BB78;
+            --danger: #F56565;
+            --warning: #ED8936;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.15);
+            --radius: 16px;
+            --radius-lg: 24px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            background: linear-gradient(135deg, #0F1419 0%, #1A202C 100%);
+            color: var(--light);
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: var(--darker);
+            padding: 30px 40px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.1);
+            transform: rotate(30deg);
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo i {
+            font-size: 3rem;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 18px;
+            border-radius: 20px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .logo-text h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.8rem;
+            font-weight: 900;
+            margin-bottom: 5px;
+            background: linear-gradient(135deg, var(--darker) 0%, #2D3748 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo-text p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            font-weight: 500;
+        }
+
+        .header-stats {
+            display: flex;
+            gap: 20px;
+        }
+
+        .stat-badge {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 12px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Main Layout */
+        .app-container {
+            display: grid;
+            grid-template-columns: 1fr 1.8fr;
+            gap: 30px;
+        }
+
+        @media (max-width: 1100px) {
+            .app-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Card Styles */
+        .card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            transition: var(--transition);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+            border-color: rgba(255, 215, 0, 0.3);
+        }
+
+        .card-header {
+            padding: 25px 30px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: var(--darker);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card-header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .card-header i {
+            font-size: 1.8rem;
+        }
+
+        .card-header h2 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .card-badge {
+            background: var(--darker);
+            color: var(--primary);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .card-body {
+            padding: 30px;
+        }
+
+        /* Form Styles */
+        .form-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-group label {
+            margin-bottom: 12px;
+            font-weight: 600;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1rem;
+        }
+
+        .input-group label i {
+            font-size: 1.2rem;
+        }
+
+        .input-group input, .input-group select {
+            padding: 16px 20px;
+            border: 2px solid rgba(255, 215, 0, 0.2);
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: var(--transition);
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--light);
+        }
+
+        .input-group input::placeholder {
+            color: var(--gray);
+        }
+
+        .input-group input:focus, .input-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(255, 215, 0, 0.1);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        /* PERBAIKAN: Dropdown jurusan dengan kontras yang baik */
+        .input-group select option {
+            background: #2D3748;
+            color: var(--light);
+            padding: 12px;
+            font-size: 1rem;
+        }
+
+        .input-group select option:checked {
+            background: var(--primary);
+            color: var(--darker);
+            font-weight: 600;
+        }
+
+        .input-group select option:hover {
+            background: var(--primary-dark);
+            color: var(--darker);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 16px 32px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: var(--darker);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(255, 193, 7, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--light);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-3px);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger) 0%, #E53E3E 100%);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(245, 101, 101, 0.4);
+        }
+
+        /* Table Styles */
+        .table-container {
+            overflow-x: auto;
+            border-radius: 12px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 20px 16px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        th {
+            background: rgba(255, 215, 0, 0.1);
+            color: var(--primary);
+            font-weight: 700;
+            position: sticky;
+            top: 0;
+            font-size: 1rem;
+        }
+
+        tr {
+            transition: var(--transition);
+        }
+
+        tr:hover {
+            background: rgba(255, 215, 0, 0.05);
+        }
+
+        .student-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: var(--darker);
+        }
+
+        .student-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-btn {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .edit-btn {
+            background: var(--success);
+            color: white;
+        }
+
+        .edit-btn:hover {
+            background: #38A169;
+            transform: translateY(-2px) scale(1.05);
+        }
+
+        .delete-btn {
+            background: var(--danger);
+            color: white;
+        }
+
+        .delete-btn:hover {
+            background: #E53E3E;
+            transform: translateY(-2px) scale(1.05);
+        }
+
+        /* Stats Section */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 25px;
+            margin-bottom: 35px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(255, 107, 53, 0.1) 100%);
+            padding: 30px 25px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 215, 0, 0.2);
+        }
+
+        .stat-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--secondary) 100%);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .stat-card i {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 20px;
+        }
+
+        .stat-card h3 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: var(--light);
+            font-weight: 700;
+        }
+
+        .stat-card p {
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        /* Search & Filter */
+        .search-filter-container {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 300px;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 16px 20px 16px 50px;
+            border: 2px solid rgba(255, 215, 0, 0.2);
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: var(--transition);
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--light);
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(255, 215, 0, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+
+        .filter-select {
+            padding: 16px 20px;
+            border: 2px solid rgba(255, 215, 0, 0.2);
+            border-radius: 12px;
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--light);
+            min-width: 200px;
+        }
+
+        /* PERBAIKAN: Filter dropdown dengan kontras yang baik */
+        .filter-select option {
+            background: #2D3748;
+            color: var(--light);
+            padding: 12px;
+            font-size: 1rem;
+        }
+
+        .filter-select option:checked {
+            background: var(--primary);
+            color: var(--darker);
+            font-weight: 600;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
+            color: var(--gray);
+        }
+
+        .empty-state i {
+            font-size: 5rem;
+            margin-bottom: 25px;
+            color: rgba(255, 215, 0, 0.3);
+        }
+
+        .empty-state h3 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: var(--light);
+        }
+
+        .empty-state p {
+            font-size: 1.1rem;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            padding: 30px;
+            color: var(--gray);
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 20px;
+            }
+
+            .logo {
+                justify-content: center;
+            }
+
+            .header-stats {
+                justify-content: center;
+            }
+
+            .form-group {
+                grid-template-columns: 1fr;
+            }
+
+            .btn-group {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .search-filter-container {
+                flex-direction: column;
+            }
+
+            .search-box {
+                min-width: 100%;
+            }
+
+            th, td {
+                padding: 15px 10px;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+
+        /* Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.6s ease forwards;
+        }
+
+        .slide-in {
+            animation: slideIn 0.6s ease forwards;
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 30px;
+            right: 30px;
+            padding: 20px 30px;
+            border-radius: 12px;
+            color: white;
+            font-weight: 600;
+            box-shadow: var(--shadow-lg);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transform: translateX(150%);
+            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            max-width: 400px;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            background: linear-gradient(135deg, var(--success) 0%, #38A169 100%);
+        }
+
+        .notification.error {
+            background: linear-gradient(135deg, var(--danger) 0%, #E53E3E 100%);
+        }
+
+        .notification.warning {
+            background: linear-gradient(135deg, var(--warning) 0%, #DD6B20 100%);
+        }
+
+        .notification i {
+            font-size: 1.5rem;
+        }
+
+        /* Semester Badge */
+        .semester-badge {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            background: rgba(255, 215, 0, 0.15);
+            color: var(--primary);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+
+        /* Floating Action Button */
+        .fab {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: var(--darker);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: var(--shadow-lg);
+            cursor: pointer;
+            transition: var(--transition);
+            z-index: 100;
+        }
+
+        .fab:hover {
+            transform: scale(1.1) rotate(90deg);
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        const App = () => {
+            const [students, setStudents] = useState([]);
+            const [formData, setFormData] = useState({
+                id: '',
+                nama: '',
+                nim: '',
+                jurusan: '',
+                semester: '',
+                email: '',
+                telepon: ''
+            });
+            const [isEditing, setIsEditing] = useState(false);
+            const [searchTerm, setSearchTerm] = useState('');
+            const [filterJurusan, setFilterJurusan] = useState('');
+            const [notification, setNotification] = useState({ show: false, message: '', type: '' });
+            const [activeCard, setActiveCard] = useState('form');
+
+            // Sample initial data
+            const initialStudents = [
+                {
+                    id: '1',
+                    nama: 'Ahmad Fauzi',
+                    nim: '20210001',
+                    jurusan: 'Teknik Informatika',
+                    semester: '5',
+                    email: 'ahmad.fauzi@example.com',
+                    telepon: '081234567890'
+                },
+                {
+                    id: '2',
+                    nama: 'Siti Rahayu',
+                    nim: '20210002',
+                    jurusan: 'Kimia',
+                    semester: '3',
+                    email: 'siti.rahayu@example.com',
+                    telepon: '081234567891'
+                },
+                {
+                    id: '3',
+                    nama: 'Budi Santoso',
+                    nim: '20210003',
+                    jurusan: 'Teknik Elektro',
+                    semester: '7',
+                    email: 'budi.santoso@example.com',
+                    telepon: '081234567892'
+                },
+                {
+                    id: '4',
+                    nama: 'Maya Sari',
+                    nim: '20210004',
+                    jurusan: 'Biologi',
+                    semester: '2',
+                    email: 'maya.sari@example.com',
+                    telepon: '081234567893'
+                }
+            ];
+
+            // Load data from localStorage on component mount
+            useEffect(() => {
+                const savedStudents = localStorage.getItem('students');
+                if (savedStudents) {
+                    setStudents(JSON.parse(savedStudents));
+                } else {
+                    setStudents(initialStudents);
+                }
+            }, []);
+
+            // Save data to localStorage whenever students change
+            useEffect(() => {
+                localStorage.setItem('students', JSON.stringify(students));
+            }, [students]);
+
+            const showNotification = (message, type) => {
+                setNotification({ show: true, message, type });
+                setTimeout(() => {
+                    setNotification({ show: false, message: '', type: '' });
+                }, 4000);
+            };
+
+            const handleInputChange = (e) => {
+                const { name, value } = e.target;
+                setFormData({
+                    ...formData,
+                    [name]: value
+                });
+            };
+
+            const handleSubmit = (e) => {
+                e.preventDefault();
+                
+                if (isEditing) {
+                    // Update existing student
+                    setStudents(students.map(student => 
+                        student.id === formData.id ? formData : student
+                    ));
+                    showNotification('Data mahasiswa berhasil diperbarui!', 'success');
+                } else {
+                    // Add new student
+                    const newStudent = {
+                        ...formData,
+                        id: Date.now().toString()
+                    };
+                    setStudents([...students, newStudent]);
+                    showNotification('Data mahasiswa berhasil ditambahkan!', 'success');
+                }
+                
+                // Reset form
+                setFormData({
+                    id: '',
+                    nama: '',
+                    nim: '',
+                    jurusan: '',
+                    semester: '',
+                    email: '',
+                    telepon: ''
+                });
+                setIsEditing(false);
+            };
+
+            const handleEdit = (student) => {
+                setFormData(student);
+                setIsEditing(true);
+                setActiveCard('form');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            };
+
+            const handleDelete = (id) => {
+                if (window.confirm('Apakah Anda yakin ingin menghapus ini?')) {
+                    setStudents(students.filter(student => student.id !== id));
+                    showNotification('Data mahasiswa berhasil dihapus!', 'success');
+                }
+            };
+
+            const handleCancel = () => {
+                setFormData({
+                    id: '',
+                    nama: '',
+                    nim: '',
+                    jurusan: '',
+                    semester: '',
+                    email: '',
+                    telepon: ''
+                });
+                setIsEditing(false);
+            };
+
+            const getInitials = (name) => {
+                return name.split(' ').map(n => n[0]).join('').toUpperCase();
+            };
+
+            const filteredStudents = students.filter(student => {
+                const matchesSearch = 
+                    student.nama.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    student.nim.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    student.jurusan.toLowerCase().includes(searchTerm.toLowerCase());
+                
+                const matchesFilter = filterJurusan ? student.jurusan === filterJurusan : true;
+                
+                return matchesSearch && matchesFilter;
+            });
+
+            const uniqueJurusan = [...new Set(students.map(student => student.jurusan))];
+
+            return (
+                <div className="container">
+                    {/* Notification */}
+                    <div className={`notification ${notification.type} ${notification.show ? 'show' : ''}`}>
+                        <i className={`fas ${notification.type === 'success' ? 'fa-check-circle' : notification.type === 'warning' ? 'fa-exclamation-triangle' : 'fa-exclamation-circle'}`}></i>
+                        <span>{notification.message}</span>
+                    </div>
+
+                    <header className="fade-in">
+                        <div className="header-content">
+                            <div className="logo">
+                                <i className="fas fa-user-graduate"></i>
+                                <div className="logo-text">
+                                    <h1>S I M A</h1>
+                                    <p>Sistem Informasi Mahasiswa</p>
+                                </div>
+                            </div>
+                            <div className="header-stats">
+                                <div className="stat-badge">
+                                    <i className="fas fa-users"></i>
+                                    {students.length} Mahasiswa
+                                </div>
+                                <div className="stat-badge">
+                                    <i className="fas fa-book"></i>
+                                    {uniqueJurusan.length} Program Studi
+                                </div>
+                            </div>
+                        </div>
+                    </header>
+                    
+                    <div className="stats-container">
+                        <div className="stat-card fade-in">
+                            <i className="fas fa-user-graduate"></i>
+                            <h3>{students.length}</h3>
+                            <p>Total Mahasiswa</p>
+                        </div>
+                        <div className="stat-card fade-in">
+                            <i className="fas fa-book-open"></i>
+                            <h3>{uniqueJurusan.length}</h3>
+                            <p>Program Studi</p>
+                        </div>
+                        <div className="stat-card fade-in">
+                            <i className="fas fa-chart-line"></i>
+                            <h3>{students.filter(s => parseInt(s.semester) >= 5).length}</h3>
+                            <p>Tingkat Akhir</p>
+                        </div>
+                        <div className="stat-card fade-in">
+                            <i className="fas fa-rocket"></i>
+                            <h3>{students.filter(s => parseInt(s.semester) <= 4).length}</h3>
+                            <p>Mahasiswa Baru</p>
+                        </div>
+                    </div>
+                    
+                    <div className="app-container">
+                        <div className="left-column">
+                            <div className={`card ${activeCard === 'form' ? 'fade-in' : 'slide-in'}`}>
+                                <div className="card-header">
+                                    <div className="card-header-left">
+                                        <i className="fas fa-user-plus"></i>
+                                        <h2>{isEditing ? 'Edit Data Mahasiswa' : 'Tambah Mahasiswa Baru'}</h2>
+                                    </div>
+                                    {/* PERBAIKAN: Hapus tulisan "Input Data" */}
+                                    {isEditing && (
+                                        <div className="card-badge">
+                                            Edit Mode
+                                        </div>
+                                    )}
+                                </div>
+                                <div className="card-body">
+                                    <form onSubmit={handleSubmit}>
+                                        <div className="form-group">
+                                            <div className="input-group">
+                                                <label htmlFor="nama"><i className="fas fa-user"></i> Nama Lengkap</label>
+                                                <input
+                                                    type="text"
+                                                    id="nama"
+                                                    name="nama"
+                                                    value={formData.nama}
+                                                    onChange={handleInputChange}
+                                                    placeholder="Masukkan nama lengkap"
+                                                    required
+                                                />
+                                            </div>
+                                            <div className="input-group">
+                                                <label htmlFor="nim"><i className="fas fa-id-card"></i> NIM</label>
+                                                <input
+                                                    type="text"
+                                                    id="nim"
+                                                    name="nim"
+                                                    value={formData.nim}
+                                                    onChange={handleInputChange}
+                                                    placeholder="Masukkan NIM"
+                                                    required
+                                                />
+                                            </div>
+                                            <div className="input-group">
+                                                <label htmlFor="jurusan"><i className="fas fa-graduation-cap"></i> Jurusan</label>
+                                                <select
+                                                    id="jurusan"
+                                                    name="jurusan"
+                                                    value={formData.jurusan}
+                                                    onChange={handleInputChange}
+                                                    required
+                                                >
+                                                    <option value="">Pilih Jurusan</option>
+                                                    <option value="Teknik Informatika">Teknik Informatika</option>
+                                                    <option value="Kimia">Kimia</option>
+                                                    <option value="Teknik Elektro">Teknik Elektro</option>
+                                                    <option value="Fisika">Fisika</option>
+                                                    <option value="Matematika">Matematika</option>
+                                                    <option value="Biologi">Biologi</option>
+                                                    <option value="Teknik Lingkungan">Teknik Lingkungan</option>                                                  
+                                                </select>
+                                            </div>
+                                            <div className="input-group">
+                                                <label htmlFor="semester"><i className="fas fa-layer-group"></i> Semester</label>
+                                                <select
+                                                    id="semester"
+                                                    name="semester"
+                                                    value={formData.semester}
+                                                    onChange={handleInputChange}
+                                                    required
+                                                >
+                                                    <option value="">Pilih Semester</option>
+                                                    {[1, 2, 3, 4, 5, 6, 7, 8].map(sem => (
+                                                        <option key={sem} value={sem}>Semester {sem}</option>
+                                                    ))}
+                                                </select>
+                                            </div>
+                                            <div className="input-group">
+                                                <label htmlFor="email"><i className="fas fa-envelope"></i> Email</label>
+                                                <input
+                                                    type="email"
+                                                    id="email"
+                                                    name="email"
+                                                    value={formData.email}
+                                                    onChange={handleInputChange}
+                                                    placeholder="Masukkan email"
+                                                    required
+                                                />
+                                            </div>
+                                            <div className="input-group">
+                                                <label htmlFor="telepon"><i className="fas fa-phone"></i> Nomor Telepon</label>
+                                                <input
+                                                    type="tel"
+                                                    id="telepon"
+                                                    name="telepon"
+                                                    value={formData.telepon}
+                                                    onChange={handleInputChange}
+                                                    placeholder="Masukkan nomor telepon"
+                                                    required
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="btn-group">
+                                            <button type="submit" className="btn btn-primary">
+                                                <i className={isEditing ? "fas fa-save" : "fas fa-plus"}></i>
+                                                {isEditing ? 'Simpan Perubahan' : 'Tambah Data'}
+                                            </button>
+                                            {isEditing && (
+                                                <button type="button" className="btn btn-secondary" onClick={handleCancel}>
+                                                    <i className="fas fa-times"></i> Batal Edit
+                                                </button>
+                                            )}
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div className="right-column">
+                            <div className="card fade-in">
+                                <div className="card-header">
+                                    <div className="card-header-left">
+                                        <i className="fas fa-list"></i>
+                                        <h2>Daftar Mahasiswa</h2>
+                                    </div>
+                                    <div className="card-badge">
+                                        {filteredStudents.length} Data
+                                    </div>
+                                </div>
+                                <div className="card-body">
+                                    <div className="search-filter-container">
+                                        <div className="search-box">
+                                            <i className="fas fa-search search-icon"></i>
+                                            <input
+                                                type="text"
+                                                className="search-input"
+                                                placeholder="Cari berdasarkan nama, NIM, atau jurusan..."
+                                                value={searchTerm}
+                                                onChange={(e) => setSearchTerm(e.target.value)}
+                                            />
+                                        </div>
+                                        <select 
+                                            className="filter-select"
+                                            value={filterJurusan}
+                                            onChange={(e) => setFilterJurusan(e.target.value)}
+                                        >
+                                            <option value="">Semua Jurusan</option>
+                                            {uniqueJurusan.map(jurusan => (
+                                                <option key={jurusan} value={jurusan}>{jurusan}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                    
+                                    {filteredStudents.length > 0 ? (
+                                        <div className="table-container">
+                                            <table>
+                                                <thead>
+                                                    <tr>
+                                                        <th>Mahasiswa</th>
+                                                        <th>NIM</th>
+                                                        <th>Jurusan</th>
+                                                        <th>Semester</th>
+                                                        <th>Kontak</th>
+                                                        <th>Aksi</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {filteredStudents.map((student, index) => (
+                                                        <tr key={student.id}>
+                                                            <td>
+                                                                <div className="student-info">
+                                                                    <div className="student-avatar">
+                                                                        {getInitials(student.nama)}
+                                                                    </div>
+                                                                    <div>
+                                                                        <strong>{student.nama}</strong>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td>{student.nim}</td>
+                                                            <td>{student.jurusan}</td>
+                                                            <td>
+                                                                <span className="semester-badge">
+                                                                    {student.semester}
+                                                                </span>
+                                                            </td>
+                                                            <td>
+                                                                <div>
+                                                                    <div>{student.email}</div>
+                                                                    <div style={{fontSize: '0.85rem', color: 'var(--gray)'}}>{student.telepon}</div>
+                                                                </div>
+                                                            </td>
+                                                            <td>
+                                                                <div className="action-buttons">
+                                                                    <button 
+                                                                        className="action-btn edit-btn"
+                                                                        onClick={() => handleEdit(student)}
+                                                                    >
+                                                                        <i className="fas fa-edit"></i> Edit
+                                                                    </button>
+                                                                    <button 
+                                                                        className="action-btn delete-btn"
+                                                                        onClick={() => handleDelete(student.id)}
+                                                                    >
+                                                                        <i className="fas fa-trash"></i> Hapus
+                                                                    </button>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    ))}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    ) : (
+                                        <div className="empty-state">
+                                            <i className="fas fa-user-slash"></i>
+                                            <h3>Tidak ada data mahasiswa</h3>
+                                            <p>
+                                                {searchTerm || filterJurusan 
+                                                    ? 'Coba ubah kata kunci pencarian atau filter yang Anda gunakan' 
+                                                    : 'Silakan tambahkan data mahasiswa terlebih dahulu menggunakan form di samping'
+                                                }
+                                            </p>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <footer>
+                        <p>SIMA&copy; 2025 - Sistem Informasi Mahasiswa| v1.0</p>
+                    </footer>
+                </div>
+            );
+        };
+
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+</html>
